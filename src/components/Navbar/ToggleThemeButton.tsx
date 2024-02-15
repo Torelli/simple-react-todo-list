@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ToggleThemeButton() {
   const [theme, setTheme] = useState("light");
 
+  useEffect(() => {
+    if (theme == "light") {
+      document.body.classList.remove("dark");
+    } else {
+      document.body.classList.add("dark");
+    }
+  }, [theme]);
+
   function handleThemeToggling() {
     if (theme == "light") {
-      document.body.classList.add("dark");
       setTheme("dark");
     } else {
-      document.body.classList.remove("dark");
       setTheme("light");
     }
   }
