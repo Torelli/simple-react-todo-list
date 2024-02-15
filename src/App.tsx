@@ -1,11 +1,11 @@
-import './App.css'
+import { Navbar } from "./components/Navbar";
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline text-green-700">
-    Hello world!
-  </h1>
-  )
+    <div className="bg-white text-gray-900 dark:text-white dark:bg-gray-900 min-h-screen font-sans">
+      <Navbar title="Simple React Todo List" />
+    </div>
+  );
 }
 
-export default App
+export default App;
