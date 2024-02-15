@@ -2,8 +2,16 @@ import { useEffect, useState } from "react";
 import TodoField from "./TodoField";
 import TodoList from "./TodoList";
 
+type Todo = {
+  id: string;
+  title: string;
+  isFinished: boolean;
+};
+
 export default function TodosContainer() {
-  const initialTodos: { id: string; title: string; isFinished: boolean }[] = [];
+  const initialTodos:() => Todo[] = () => {
+    return JSON.parse(localStorage.getItem("todos") || "[]") as Todo[];
+  };
   const [todos, setTodos] = useState(initialTodos);
 
   function createTodo(title: string) {
@@ -22,7 +30,7 @@ export default function TodosContainer() {
 
   function editTodo(id: string, title: string) {
     if (title != "") {
-      const nextTodos: { id: string; title: string; isFinished: boolean }[] =
+      const nextTodos: Todo[] =
         todos.map((todo) => {
           if (todo.id === id) {
             todo.title = title;
@@ -34,14 +42,14 @@ export default function TodosContainer() {
   }
 
   function deleteTodo(id: string) {
-    const nextTodos: { id: string; title: string; isFinished: boolean }[] =
+    const nextTodos: Todo[] =
       todos.filter((todo) => todo.id !== id);
 
     setTodos(nextTodos);
   }
 
   function changeTodoStatus(id: string) {
-    const nextTodos: { id: string; title: string; isFinished: boolean }[] =
+    const nextTodos: Todo[] =
       todos.map((todo) => {
         if (todo.id === id) {
           if (todo.isFinished) todo.isFinished = false;
@@ -54,8 +62,15 @@ export default function TodosContainer() {
   }
 
   useEffect(() => {
-    console.log(todos);
+    localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
+
+  useEffect(() => {
+    const persistedTodos: Todo[] =
+      JSON.parse(localStorage.getItem("todos") || "[]");
+    if (persistedTodos.length > 0) setTodos(persistedTodos);
+    console.log(localStorage.getItem("todos"));
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center mt-8">

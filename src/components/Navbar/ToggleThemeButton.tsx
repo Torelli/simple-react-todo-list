@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
 export default function ToggleThemeButton() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   useEffect(() => {
     if (theme == "light") {
+      localStorage.theme = "light";
       document.body.classList.remove("dark");
     } else {
+      localStorage.theme = "dark";
       document.body.classList.add("dark");
     }
   }, [theme]);
